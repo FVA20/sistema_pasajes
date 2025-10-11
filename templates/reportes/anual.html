@@ -1,0 +1,37 @@
+{% extends 'reportes/base.html' %}
+
+{% block title %}Reporte Anual{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Reporte Anual - {{ anio }}</h2>
+    
+    <div class="stats">
+        <div class="stat-box">
+            <h3>{{ total_pasajes }}</h3>
+            <p>Total Pasajes</p>
+        </div>
+        <div class="stat-box" style="background: #27ae60;">
+            <h3>S/ {{ total_ingresos|floatformat:2 }}</h3>
+            <p>Ingresos Totales</p>
+        </div>
+        <div class="stat-box" style="background: #e74c3c;">
+            <h3>{{ pasajes_anulados }}</h3>
+            <p>Anulados</p>
+        </div>
+        <div class="stat-box" style="background: #f39c12;">
+            <h3>{{ promedio_mensual }}</h3>
+            <p>Promedio Mensual</p>
+        </div>
+    </div>
+    
+    <h3>Resumen por Semestre</h3>
+    <p>Primer semestre: {{ primer_semestre }} | Segundo semestre: {{ segundo_semestre }}</p>
+    
+    {% if mes_pico %}
+    <h3>Mejor y Peor Mes</h3>
+    <p>Mes con más ventas: Mes {{ mes_pico.mes }} ({{ mes_pico.total }} pasajes)</p>
+    <p>Mes con menos ventas: Mes {{ mes_valle.mes }} ({{ mes_valle.total }} pasajes)</p>
+    {% endif %}
+</div>
+{% endblock %}

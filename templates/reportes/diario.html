@@ -1,0 +1,57 @@
+{% extends 'reportes/base.html' %}
+
+{% block title %}Reporte Diario{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Reporte Diario - {{ fecha|date:"d/m/Y" }}</h2>
+    
+    <div class="stats">
+        <div class="stat-box">
+            <h3>{{ total_pasajes }}</h3>
+            <p>Total Pasajes</p>
+        </div>
+        <div class="stat-box" style="background: #27ae60;">
+            <h3>{{ pasajes_vigentes }}</h3>
+            <p>Vigentes</p>
+        </div>
+        <div class="stat-box" style="background: #e74c3c;">
+            <h3>{{ pasajes_anulados }}</h3>
+            <p>Anulados</p>
+        </div>
+        <div class="stat-box" style="background: #f39c12;">
+            <h3>S/ {{ total_ingresos|floatformat:2 }}</h3>
+            <p>Ingresos</p>
+        </div>
+    </div>
+    
+    <h3>Equipaje y Encomiendas</h3>
+    <p>Con equipaje: {{ con_equipaje }} | Con encomienda: {{ con_encomienda }}</p>
+    
+    <h3>Últimos Pasajes del Día</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Pasajero</th>
+                <th>Asiento</th>
+                <th>Estado</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pasaje in pasajes %}
+            <tr>
+                <td>{{ pasaje.codigo_ticket }}</td>
+                <td>{{ pasaje.pasajero.nombre_completo }}</td>
+                <td>{{ pasaje.numero_asiento }}</td>
+                <td>{{ pasaje.get_estado_display }}</td>
+                <td>S/ {{ pasaje.precio }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No hay pasajes registrados hoy</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

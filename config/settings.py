@@ -44,9 +44,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # ← MOVIDO AL INICIO
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -148,7 +148,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',  # ← CAMBIADO para permitir acceso público a las APIs
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
@@ -186,14 +186,31 @@ SIMPLE_JWT = {
     'JTI_CLAIM': 'jti',
 }
 
-# CORS Settings
+# ========================================
+# CORS Settings - ACTUALIZADO PARA REACT
+# ========================================
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "http://localhost:5173",
+    "http://localhost:5173",  # React Vite
+    "http://127.0.0.1:5173",  # React Vite
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+# Permitir todos los headers y métodos
+CORS_ALLOW_HEADERS = ['*']
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+# Permitir que el navegador acceda a estos headers en la respuesta
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 
 # Configuración de timezone para Perú
 USE_L10N = True
@@ -221,3 +238,13 @@ EQUIPAJE_CONFIG = {
     'PESO_MANO_KG': 10,
     'CARGO_POR_KG_EXTRA': 5.00,  # soles
 }
+
+# ========================================
+# CSRF Settings para desarrollo
+# ========================================
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
